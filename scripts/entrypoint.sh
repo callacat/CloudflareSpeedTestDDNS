@@ -27,19 +27,14 @@ time=${CRON_TIME:-'0 5 * * *'}
 # 根据 ENABLE_DOWNLOAD 变量选择要执行的命令
 if [ "$ENABLE_DOWNLOAD" = "true" ]; then
     echo "将使用优选IP进行测速"
-    cron_command="/app/yxip.sh"
+    cron_command="/yxip.sh"
 else
     echo "未选择优选IP进行测速，使用默认IP"
-    cron_command="/app/start.sh"
+    cron_command="/start.sh"
 fi
 
-echo "执行命令：$cron_command"
-echo "时间：$time"
-
 # 创建 cron 作业
-echo "$time $cron_command >> /data/cron.log 2>&1" > /etc/crontabs/cfyx
-
-cat /etc/crontabs/cfyx
+echo "$time cd /app && $cron_command >> /data/cron.log 2>&1" > /etc/crontabs/cfyx
 
 # 载入 cron 作业
 crontab /etc/crontabs/cfyx
