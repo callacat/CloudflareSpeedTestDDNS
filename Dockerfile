@@ -1,9 +1,12 @@
 # 使用Alpine Linux作为基础镜像
 FROM alpine:latest
 
+ENV TZ=Asia/Shanghai
+
 # 安装所需的依赖包
-RUN apk add --no-cache bash jq wget curl tar sed unzip git \
-    && rm -rf /var/cache/apk/*
+RUN apk add --no-cache bash jq wget curl tar sed unzip git tzdata \
+    && rm -rf /var/cache/apk/* \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # 创建/app和/config目录
 RUN mkdir /app /data
