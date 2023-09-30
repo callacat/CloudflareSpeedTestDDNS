@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# 默认定时
-time='0 5 * * *'
-
 # 如果 /data/config.conf 不存在，将其移动到 /data 目录
 if [ ! -f /data/config.conf ]; then
     mv /app/config.conf /data/config.conf
@@ -18,14 +15,14 @@ if [ ! -L /app/config.conf ]; then
     ln -s /data/config.conf /app/config.conf
 fi
 
-# 如果存在自定义的cron.sh，执行它
+# 如果存在自定义的cron.sh，执行它并获取输出
 if [ -f /data/cron.sh ]; then
     chmod +x /data/cron.sh
-    /data/cron.sh
-else
-    # 设置时间
-    time=${CRON_TIME:-'0 5 * * *'}
+    source /data/cron.sh  # 这里使用 source 来运行，以获取环境变量
 fi
+
+# 设置时间
+time=${CRON_TIME:-'0 5 * * *'}
 
 # 根据 ENABLE_DOWNLOAD 变量选择要执行的命令
 if [ "$ENABLE_DOWNLOAD" = "true" ]; then
