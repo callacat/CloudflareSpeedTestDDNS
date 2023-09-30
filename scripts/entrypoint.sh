@@ -39,5 +39,8 @@ echo "$time cd /app && $cron_command >> /data/cron.log 2>&1" > /etc/crontabs/cfy
 # 载入 cron 作业
 crontab /etc/crontabs/cfyx
 
+# 输出日志
+tail -f /data/cron.log
+
 # 启动 cron 守护进程
 crond -f
