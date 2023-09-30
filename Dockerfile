@@ -6,7 +6,7 @@ RUN apk add --no-cache bash jq wget curl tar sed unzip git \
     && rm -rf /var/cache/apk/*
 
 # 创建/app和/config目录
-RUN mkdir /app /app/config
+RUN mkdir /app /data
 
 # 设置工作目录
 WORKDIR /app
