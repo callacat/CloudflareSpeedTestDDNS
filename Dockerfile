@@ -2,7 +2,8 @@
 FROM alpine:latest
 
 # 安装所需的依赖包
-RUN apk add --no-cache bash jq wget curl tar sed unzip git
+RUN apk add --no-cache bash jq wget curl tar sed unzip git \
+    && rm -rf /var/cache/apk/*
 
 # 创建/app和/config目录
 RUN mkdir /app /config
@@ -18,6 +19,8 @@ RUN git clone https://github.com/lee1080/CloudflareSpeedTestDDNS.git && \
 # 下载CloudflareSpeedTest并解压缩
 RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTest/releases/latest | jq -r .tag_name) && \
     arch=$(apk --print-arch) && \
+    echo "Architecture: $arch" && \
+    echo "Latest version: $latest_version" && \
     if [ "$arch" = "x86_64" ]; then \
         wget https://github.com/XIU2/CloudflareSpeedTest/releases/download/${latest_version}/CloudflareST_linux_amd64.tar.gz -O CloudflareST.tar.gz; \
     elif [ "$arch" = "aarch64" ]; then \
