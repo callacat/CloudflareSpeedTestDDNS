@@ -1,42 +1,46 @@
-# 使用alpine镜像，它是一个轻量级的Linux发行版
+# 使用Alpine Linux作为基础镜像
 FROM alpine:latest
 
-ENV TZ=Asia/Shanghai
+# 安装所需的依赖包
+RUN apk add --no-cache bash jq wget curl tar sed unzip git
 
-# 安装依赖bash、jq、wget、curl、tar、sed、awk、tr、unzip
-RUN apk update \
-    && apk add --no-cache bash jq wget curl tar sed unzip git \
-    && rm -rf /var/cache/apk/*
+# 创建/app和/config目录
+RUN mkdir /app /config
 
-# 创建/data和/app目录
-RUN mkdir /data /app
+# 设置工作目录
+WORKDIR /app
 
-# 设置工作目录为/data
-WORKDIR /data
-
-# 克隆GitHub仓库并移动文件到当前目录，删除空文件夹
+# 下载CloudflareSpeedTestDDNS代码并移动文件
 RUN git clone https://github.com/lee1080/CloudflareSpeedTestDDNS.git && \
     mv CloudflareSpeedTestDDNS/* . && \
     rm -rf CloudflareSpeedTestDDNS
 
-# 执行cf_check.sh脚本并设置时区
-RUN bash cf_ddns/cf_check.sh \
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+# 下载CloudflareSpeedTest并解压缩
+RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTest/releases/latest | jq -r .tag_name) && \
+    arch=$(apk --print-arch) && \
+    if [ "$arch" = "x86_64" ]; then \
+        wget https://github.com/XIU2/CloudflareSpeedTest/releases/download/${latest_version}/CloudflareST_linux_amd64.tar.gz -O CloudflareST.tar.gz; \
+    elif [ "$arch" = "aarch64" ]; then \
+        wget https://github.com/XIU2/CloudflareSpeedTest/releases/download/${latest_version}/CloudflareST_linux_arm64.tar.gz -O CloudflareST.tar.gz; \
+    else \
+        echo "Unsupported architecture"; \
+        exit 1; \
+    fi && \
+    tar -xzvf CloudflareST.tar.gz -C CloudflareST && \
+    mv CloudflareST/* ./cf_ddns/ && \
+    rm -rf CloudflareST CloudflareST.tar.gz
 
-# 下载并解压txt.zip文件，替换ip.txt文件的内容，删除txt文件夹
-RUN wget -O txt.zip https://zip.baipiao.eu.org/ && \
-    unzip txt.zip -d txt && \
-    rm cf_ddns/ip.txt && \
-    cat txt/*.txt > cf_ddns/ip.txt && \
-    rm -rf txt txt.zip
+# 创建/config软链接
+RUN ln -s /config/config.conf /app/config.conf
 
-# 设置工作目录为/app
-WORKDIR /app
+# 复制脚本文件夹中的所有内容到容器的/app目录下
+COPY script/ /app/
 
-ADD entrypoint.sh entrypoint.sh
+# 复制cron.sh文件到容器的/config目录下
+COPY cron.sh /config/
 
-# 给sh脚本添加可执行权限
-RUN pwd && ls  && chmod +x entrypoint.sh
+# 分别给/app目录下的所有文件和/config/cron.sh文件赋权
+RUN chmod +x /app/* /config/cron.sh
 
-# 运行sh脚本
-CMD ["bash", "/app/entrypoint.sh"]
+# 设置容器入口点
+ENTRYPOINT ["/app/entrypoint.sh"]
