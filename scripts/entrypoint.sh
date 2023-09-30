@@ -34,10 +34,10 @@ else
 fi
 
 # 创建 cron 作业
-echo "$time \"$cron_command >> /var/log/cron.log 2>&1\"" > /etc/cron.d/cf_ddns-cron
+echo "$time \"$cron_command >> /var/log/cron.log 2>&1\"" > /etc/crontabs/cfyx
 
 # 载入 cron 作业
-crontab /etc/cron.d/cf_ddns-cron
+crontab /etc/crontabs/cfyx
 
 # 启动 cron 守护进程
 crond -f
