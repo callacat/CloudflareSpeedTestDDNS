@@ -3,6 +3,7 @@
 # 如果 /data/config.conf 不存在，将其移动到 /data 目录
 if [ ! -f /data/config.conf ]; then
     mv /app/config.conf /data/config.conf
+    rm /app/config.conf
 fi
 
 # 如果 /data/cron.sh 不存在，将其移动到 /data 目录
@@ -12,7 +13,7 @@ fi
 
 # 如果 /app/config.conf 不存在，创建软链接
 if [ ! -L /app/config.conf ]; then
-    ln -s /data/config.conf /app/config.conf
+    ln -sf /data/config.conf /app/config.conf
 fi
 
 # 如果存在自定义的cron.sh，执行它并获取输出
