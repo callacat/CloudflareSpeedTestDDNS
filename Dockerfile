@@ -33,7 +33,8 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     rm -rf CloudflareST CloudflareST.tar.gz
 
 # 创建/config软链接
-RUN ln -s /config/config.conf /app/config.conf
+RUN mv /app/config.conf /config/config.conf && \
+     ln -s /config/config.conf /app/config.conf
 
 # 复制脚本文件夹中的所有内容到容器的/app目录下
 COPY script/ /app/
