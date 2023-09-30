@@ -4,7 +4,9 @@ FROM alpine:latest
 ENV TZ=Asia/Shanghai
 
 # 安装依赖bash、jq、wget、curl、tar、sed、awk、tr、unzip
-RUN apk add --no-cache bash jq wget curl tar sed awk tr unzip
+RUN apk update \
+    && apk add --no-cache bash jq wget curl tar sed awk tr unzip \
+    && rm -rf /var/cache/apk/*
 
 # 创建/data和/app目录
 RUN mkdir /data /app
