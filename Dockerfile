@@ -33,14 +33,14 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     rm -rf CloudflareST CloudflareST.tar.gz
 
 # 创建/config软链接
-RUN mv /app/config.conf /app/config/config.conf && \
-     ln -s /app/config/config.conf /app/config.conf
+RUN mv /app/config.conf /data/config.conf && \
+     ln -s /data/config.conf /app/config.conf
 
 # 复制脚本文件夹中的所有内容到容器的/app目录下
 COPY script/ /app/
 
-# 复制cron.sh文件到容器的/config目录下
-COPY cron.sh /app/config/
+# 复制cron.sh文件到容器的/data目录下
+COPY cron.sh /data/cron.sh
 
 # 分别给/app目录下的所有文件赋权
 RUN chmod +x /app/entrypoint.sh
