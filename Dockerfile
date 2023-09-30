@@ -34,7 +34,7 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
 
 # 创建/config软链接
 RUN mv /app/config.conf /app/config/config.conf && \
-     ln -s /config/config.conf /app/config/config.conf
+     ln -s /app/config/config.conf /app/config.conf
 
 # 复制脚本文件夹中的所有内容到容器的/app目录下
 COPY script/ /app/
