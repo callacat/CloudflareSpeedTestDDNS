@@ -37,7 +37,7 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
 COPY scripts/ /app/
 
 # 给/app目录下的文件赋权
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x /app/*
 
 # 设置容器入口点
 ENTRYPOINT ["/app/entrypoint.sh"]

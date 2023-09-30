@@ -33,8 +33,13 @@ else
     cron_command="/app/start.sh"
 fi
 
+echo "执行命令：$cron_command"
+echo "时间：$time"
+
 # 创建 cron 作业
-echo "$time \"$cron_command >> /var/log/cron.log 2>&1\"" > /etc/crontabs/cfyx
+echo "$time $cron_command >> /data/cron.log 2>&1" > /etc/crontabs/cfyx
+
+cat /etc/crontabs/cfyx
 
 # 载入 cron 作业
 crontab /etc/crontabs/cfyx
