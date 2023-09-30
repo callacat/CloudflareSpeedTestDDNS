@@ -26,6 +26,7 @@ RUN bash cf_ddns/cf_check.sh \
 # 下载并解压txt.zip文件，替换ip.txt文件的内容，删除txt文件夹
 RUN wget -O txt.zip https://zip.baipiao.eu.org/ && \
     unzip txt.zip -d txt && \
+    rm cf_ddns/ip.txt && \
     cat txt/*.txt > cf_ddns/ip.txt && \
     rm -rf txt txt.zip
 
@@ -38,4 +39,4 @@ ADD entrypoint.sh entrypoint.sh
 RUN pwd && ls  && chmod +x entrypoint.sh
 
 # 运行sh脚本
-CMD ["bash", "entrypoint.sh"]
+CMD ["bash", "/app/entrypoint.sh"]
