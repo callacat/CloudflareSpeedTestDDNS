@@ -19,8 +19,6 @@ RUN git clone https://github.com/lee1080/CloudflareSpeedTestDDNS.git && \
 # 下载CloudflareSpeedTest并解压缩
 RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTest/releases/latest | jq -r .tag_name) && \
     arch=$(apk --print-arch) && \
-    echo "Architecture: $arch" && \
-    echo "Latest version: $latest_version" && \
     if [ "$arch" = "x86_64" ]; then \
         wget https://github.com/XIU2/CloudflareSpeedTest/releases/download/${latest_version}/CloudflareST_linux_amd64.tar.gz -O CloudflareST.tar.gz; \
     elif [ "$arch" = "aarch64" ]; then \
@@ -29,6 +27,7 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
         echo "Unsupported architecture"; \
         exit 1; \
     fi && \
+    mkdir CloudflareST && \
     tar -xzvf CloudflareST.tar.gz -C CloudflareST && \
     mv CloudflareST/* ./cf_ddns/ && \
     rm -rf CloudflareST CloudflareST.tar.gz
