@@ -38,14 +38,11 @@ fi
 # 创建 cron 作业
 echo "$time cd /app && $cron_command >> /data/cron.log 2>&1" > /etc/crontabs/cfyx
 
-# 载入 cron 作业并启动 cron 守护进程
-crontab /etc/crontabs/cfyx
+# 载入 cron 作业并启动 cron 守护进程（放到后台执行）
+crontab /etc/crontabs/cfyx && crond &
 
-# 执行一次脚本并将输出重定向到日志文件
-cd /app && $cron_command >> /data/cron.log 2>&1
+# 执行一次脚本并将输出重定向到日志文件（同时输出日志）
+cd /app && $cron_command | tee -a /data/cron.log
 
-# 输出日志
+# 输出日志（放到后台执行）
 tail -f /data/cron.log &
-
-# 启动 cron 守护进程
-crond -f
