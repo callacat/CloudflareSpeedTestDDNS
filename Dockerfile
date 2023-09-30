@@ -6,7 +6,7 @@ RUN apk add --no-cache bash jq wget curl tar sed unzip git \
     && rm -rf /var/cache/apk/*
 
 # 创建/app和/config目录
-RUN mkdir /app /config
+RUN mkdir /app /app/config
 
 # 设置工作目录
 WORKDIR /app
@@ -33,14 +33,14 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     rm -rf CloudflareST CloudflareST.tar.gz
 
 # 创建/config软链接
-RUN mv /app/config.conf /config/config.conf && \
-     ln -s /config/config.conf /app/config.conf
+RUN mv /app/config.conf /app/config/config.conf && \
+     ln -s /config/config.conf /app/config/config.conf
 
 # 复制脚本文件夹中的所有内容到容器的/app目录下
 COPY script/ /app/
 
 # 复制cron.sh文件到容器的/config目录下
-COPY cron.sh /config/
+COPY cron.sh /app/config/
 
 # 分别给/app目录下的所有文件赋权
 RUN chmod +x /app/entrypoint.sh
