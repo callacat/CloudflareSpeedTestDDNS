@@ -2,8 +2,8 @@
 
 # 如果 /data/config.conf 不存在，将其移动到 /data 目录
 if [ ! -f /data/config.conf ]; then
+    echo "首次启动请编辑/data映射目录下的配置文件后重启容器"
     mv /app/config.conf /data/config.conf
-    rm /app/config.conf
 fi
 
 # 如果 /data/cron.sh 不存在，将其移动到 /data 目录
@@ -13,6 +13,7 @@ fi
 
 # 如果 /app/config.conf 不存在，创建软链接
 if [ ! -L /app/config.conf ]; then
+    rm /app/config.conf
     ln -sf /data/config.conf /app/config.conf
 fi
 
@@ -37,11 +38,14 @@ fi
 # 创建 cron 作业
 echo "$time cd /app && $cron_command >> /data/cron.log 2>&1" > /etc/crontabs/cfyx
 
-# 载入 cron 作业
+# 载入 cron 作业并启动 cron 守护进程
 crontab /etc/crontabs/cfyx
 
+# 执行一次脚本并将输出重定向到日志文件
+cd /app && $cron_command >> /data/cron.log 2>&1
+
 # 输出日志
-tail -f /data/cron.log
+tail -f /data/cron.log &
 
 # 启动 cron 守护进程
 crond -f

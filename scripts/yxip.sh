@@ -5,6 +5,7 @@ cd /app
 wget https://zip.baipiao.eu.org -O txt.zip
 if [ $? -ne 0 ]; then
     echo "下载优选IP失败，使用默认IP"
+    exec /app/start.sh
     exit 1
 fi
 unzip txt.zip -d txt
