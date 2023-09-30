@@ -35,7 +35,7 @@ WORKDIR /app
 ADD entrypoint.sh entrypoint.sh
 
 # 给sh脚本添加可执行权限
-RUN chmod +x entrypoint.sh
+RUN pwd && ls  && chmod +x entrypoint.sh
 
 # 运行sh脚本
 CMD ["bash", "entrypoint.sh"]
