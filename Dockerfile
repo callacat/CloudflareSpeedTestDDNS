@@ -42,9 +42,8 @@ COPY script/ /app/
 # 复制cron.sh文件到容器的/config目录下
 COPY cron.sh /config/
 
-# 分别给/app目录下的所有文件和/config/cron.sh文件赋权
-RUN ls -l && \
-    chmod +x /app/* /config/cron.sh
+# 分别给/app目录下的所有文件赋权
+RUN chmod +x /app/entrypoint.sh
 
 # 设置容器入口点
 ENTRYPOINT ["/app/entrypoint.sh"]
