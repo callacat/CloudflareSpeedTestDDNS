@@ -12,12 +12,24 @@ else
     time=${CRON_TIME:-'0 5 * * *'}
 fi
 
-# 创建软链接
-ln -s /config/config.conf /app/config.conf
+# 如果 /data/config.conf 不存在，将其移动到 /data 目录
+if [ ! -f /data/config.conf ]; then
+    mv /app/config.conf /data/config.conf
+fi
+
+# 如果 /data/cron.sh 不存在，将其移动到 /data 目录
+if [ ! -f /data/cron.sh ]; then
+    mv /app/cron.sh /data/cron.sh
+fi
+
+# 如果 /app/config.conf 不存在，创建软链接
+if [ ! -L /app/config.conf ]; then
+    ln -s /data/config.conf /app/config.conf
+fi
 
 # 根据 ENABLE_DOWNLOAD 变量选择要执行的命令
 if [ "$ENABLE_DOWNLOAD" = "true" ]; then
-    echo "使用优选IP进行测速"
+    echo "将使用优选IP进行测速"
     command="/app/yxip.sh"
 else
     echo "未选择优选IP进行测速，使用默认IP"

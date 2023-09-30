@@ -14,7 +14,8 @@ WORKDIR /app
 # 下载CloudflareSpeedTestDDNS代码并移动文件
 RUN git clone https://github.com/lee1080/CloudflareSpeedTestDDNS.git && \
     mv CloudflareSpeedTestDDNS/* . && \
-    rm -rf CloudflareSpeedTestDDNS
+    rm -rf CloudflareSpeedTestDDNS \
+    && rm README.md
 
 # 下载CloudflareSpeedTest并解压缩
 RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTest/releases/latest | jq -r .tag_name) && \
@@ -32,17 +33,10 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     mv CloudflareST/* ./cf_ddns/ && \
     rm -rf CloudflareST CloudflareST.tar.gz
 
-# 创建/config软链接
-RUN mv /app/config.conf /data/config.conf && \
-     ln -s /data/config.conf /app/config.conf
-
 # 复制脚本文件夹中的所有内容到容器的/app目录下
-COPY script/ /app/
+COPY scripts/ /app/
 
-# 复制cron.sh文件到容器的/data目录下
-COPY cron.sh /data/cron.sh
-
-# 分别给/app目录下的所有文件赋权
+# 给/app目录下的文件赋权
 RUN chmod +x /app/entrypoint.sh
 
 # 设置容器入口点
