@@ -86,10 +86,10 @@ else
 fi  
 
 # 执行一次脚本并将输出重定向到日志文件（同时输出日志）
-cd /app && /app/kill.sh && $cron_command | tee -a /tmp/cron.log
+cd /app && $cron_command | tee -a /tmp/cron.log
 
 # 创建 cron 作业
-echo "$time cd /app && /app/kill.sh && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx
+echo "$time cd /app && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx
 
 # 载入 cron 作业并启动 cron 守护进程（放到后台执行）
 crontab /etc/crontabs/cfyx && crond &
