@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo -e "\033[32m镜像打包时间: $BUILD_TIME\033[0m\n"
+
 # 如果 /data/config.conf 不存在，将其移动到 /data 目录
 if [ ! -f /data/config.conf ]; then
     echo "首次启动请编辑/data映射目录下的配置文件后重启容器"

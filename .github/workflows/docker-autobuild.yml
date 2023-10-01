@@ -42,3 +42,5 @@ jobs:
         push: true
           # 给清单打上多个标签
         tags: ${{ secrets.DOCKER_USERNAME }}/cfyx:latest
+        build-args: |
+          BUILD_TIME=${{ steps.time.outputs.timestamp }}
