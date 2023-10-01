@@ -48,25 +48,21 @@ if [ "$IP_ADDR" = "ipv6" ]; then
 fi
 
 # 设置时间
-time=${CRON_TIME:-'0 5 * * *'}
+time=${CRON_TIME:-'5 8 * * *'}
 
 # 当使用自定义IPv4时，不执行ENABLE_DOWNLOAD 变量的判断
 if [ -f /data/ip.txt ]; then
     ENABLE_DOWNLOAD=false
 fi
 
+# 当config.conf中的IP_PR_IP为true时，不执行ENABLE_DOWNLOAD 变量的判断
+if [ "IP_PR_IP" = "true" ]; then
+    ENABLE_DOWNLOAD=false
+fi
+
 # 根据 ENABLE_DOWNLOAD 变量选择要执行的命令
 if [ "$ENABLE_DOWNLOAD" = "true" ]; then
     echo "将使用优选IP进行测速"
-    # wget https://zip.baipiao.eu.org -O txt.zip
-    # if [ $? -ne 0 ]; then
-    #     echo "下载优选IP失败，使用默认IP"
-    #     cron_command="/app/start.sh"
-    # fi
-    # unzip txt.zip -d txt
-    # rm cf_ddns/ip.txt
-    # cat txt/*.txt > cf_ddns/ip.txt
-    # rm -rf txt txt.zip
     cron_command="/app/yxip.sh"
 else
     echo "未选择优选IP进行测速，使用默认IP"
@@ -76,13 +72,13 @@ else
 fi
 
 # 创建 cron 作业
-echo "$time cd /app && $cron_command >> /data/cron.log 2>&1" > /etc/crontabs/cfyx
+echo "$time cd /app && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx
 
 # 载入 cron 作业并启动 cron 守护进程（放到后台执行）
 crontab /etc/crontabs/cfyx && crond &
 
 # 执行一次脚本并将输出重定向到日志文件（同时输出日志）
-cd /app && $cron_command | tee -a /data/cron.log
+cd /app && $cron_command | tee -a /tmp/cron.log
 
 # 输出日志（放到后台执行）
-tail -f /data/cron.log &
+tail -f /tmp/cron.log &
