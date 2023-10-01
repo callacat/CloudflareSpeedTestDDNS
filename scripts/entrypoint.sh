@@ -94,6 +94,6 @@ crontab /etc/crontabs/cfyx && crond &
 # 执行一次脚本并将输出重定向到日志文件（同时输出日志）
 cd /app && $cron_command | tee -a /tmp/cron.log
 
-# 输出日志（放到后台执行）
-echo "\033[32m当前定时: $time\033[0m\n"
+# 输出日志
+echo -e "\033[32m已加入定时任务，当前定时: $time\033[0m\n"
 tail -f /tmp/cron.log
