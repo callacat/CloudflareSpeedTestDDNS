@@ -18,6 +18,8 @@ jobs:
       - name: Download zip file from https://zip.baipiao.eu.org/
         run: |
           wget -O txt.zip https://zip.baipiao.eu.org/ -c --timeout=10 --header="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.43"
+          pwd
+          ls -l
 
       - name: Delete old release branch
         run: |
@@ -31,6 +33,8 @@ jobs:
       
       - name: Copy txt.zip file to release branch
         run: |
+          pwd
+          ls -l
           cp txt.zip . # Copy txt.zip file to current directory
           git add . # Add all files to staging area
           git commit -m "Update release from txt.zip file" # Commit changes
