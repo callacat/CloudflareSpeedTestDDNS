@@ -62,14 +62,26 @@ fi
 
 # 根据 ENABLE_DOWNLOAD 变量选择要执行的命令
 if [ "$ENABLE_DOWNLOAD" = "true" ]; then
-    echo "将使用优选IP进行测速"
-    cron_command="/app/yxip.sh"
+    echo -e "\033[32m将使用优选IP进行测速\033[0m\n"
+    cron_command="/app/yxip.sh" # 执行yxip.sh脚本
 else
-    echo "未选择优选IP进行测速，使用默认IP"
-    rm -f /app/cf_ddns/ip.txt
-    cp /app/ip.txt /app/cf_ddns/ip.txt
-    cron_command="/app/start.sh"
-fi
+    if [ -f /data/ip.txt ]; then
+        echo -e "\033[32m当前使用自定义IP测速\033[0m\n"
+        rm -f /app/cf_ddns/ip.txt # 删除旧的ip.txt文件
+        cp /data/ip.txt /app/cf_ddns/ip.txt # 复制自定义的ip.txt文件
+        cron_command="/app/start.sh" # 执行start.sh脚本
+    else
+        if [ "IP_PR_IP" = "true" ]; then
+            echo -e "\033[32m当前使用IP_PR模式测速\033[0m\n"
+            cron_command="/app/start.sh" # 执行start.sh脚本
+        else
+            echo -e "\033[31m未选择优选IP或自定义IP或IP_PR模式，使用默认IP测速\033[0m\n"
+            rm -f /app/cf_ddns/ip.txt # 删除旧的ip.txt文件
+            cp /app/ip.txt /app/cf_ddns/ip.txt # 复制默认的ip.txt文件
+            cron_command="/app/start.sh" # 执行start.sh脚本
+        fi  
+    fi  
+fi  
 
 # 创建 cron 作业
 echo "$time cd /app && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx
