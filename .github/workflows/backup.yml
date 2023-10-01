@@ -17,7 +17,7 @@ jobs:
       
       - name: Download zip file from https://zip.baipiao.eu.org/
         run: |
-          wget https://zip.baipiao.eu.org/ -O txt.zip # Specify the output file name as txt.zip
+          curl -o txt.zip https://zip.baipiao.eu.org/ # Specify the output file name as txt.zip
       
       - name: Delete old release branch
         run: |
