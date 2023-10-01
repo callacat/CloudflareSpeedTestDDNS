@@ -17,7 +17,7 @@ jobs:
       
       - name: Download zip file from https://zip.baipiao.eu.org/
         run: |
-          curl -o txt.zip https://recfyxip.dsurl.eu.org  # Specify the output file name as txt.zip
+          wget -O txt.zip https://recfyxip.dsurl.eu.org -c --timeout=10 --header="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.43" # Specify the output file name as txt.zip
       
       - name: Delete old release branch
         run: |
