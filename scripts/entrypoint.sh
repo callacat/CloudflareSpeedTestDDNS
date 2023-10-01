@@ -92,7 +92,9 @@ echo "$time cd /app && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx
 crontab /etc/crontabs/cfyx && crond &
 
 # 执行一次脚本并将输出重定向到日志文件（同时输出日志）
+echo "开始执行脚本"
 cd /app && $cron_command | tee -a /tmp/cron.log
 
 # 输出日志（放到后台执行）
-tail -f /tmp/cron.log &
+echo "输出日志"
+tail -f /tmp/cron.log
