@@ -1,7 +1,9 @@
 # 使用Alpine Linux作为基础镜像
 FROM alpine:latest
+
 ARG BUILD_TIME
 ENV BUILD_TIME ${BUILD_TIME}
+
 ENV TZ=Asia/Shanghai
 
 # 安装所需的依赖包

@@ -2,7 +2,7 @@
 
 # 下载txt.zip并解压到临时目录
 mkdir tmp
-wget -q -c --timeout=10 --header="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.43" -O tmp/txt.zip https://zip.baipiao.eu.org/
+wget -c --timeout=15 --header="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.43" -O tmp/txt.zip https://zip.baipiao.eu.org
 if [ $? -ne 0 ]; then
     echo -e "\033[31m下载优选IP失败，使用默认IP\033[0m\n"
     rm -rf tmp # 删除临时目录
