@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 读取保存在 /app/creat.txt 中的构建时间
+BUILD_TIME=$(cat /app/creat.txt)
+
 echo -e "\033[32m镜像打包时间: $BUILD_TIME\033[0m\n"
 
 # 如果 /data/config.conf 不存在，将其移动到 /data 目录
@@ -95,5 +98,6 @@ echo "$time cd /app && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx
 crontab /etc/crontabs/cfyx && crond &
 
 # 输出日志
-echo -e "\033[32m已加入定时任务，当前定时: $time\033[0m\n"
 tail -f /tmp/cron.log
+
+echo -e "\033[32m已加入定时任务，当前定时: $time\033[0m\n"

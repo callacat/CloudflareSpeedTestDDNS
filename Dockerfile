@@ -1,9 +1,6 @@
 # 使用Alpine Linux作为基础镜像
 FROM alpine:latest
 
-ARG BUILD_TIME
-ENV BUILD_TIME ${BUILD_TIME}
-
 ENV TZ=Asia/Shanghai
 
 # 安装所需的依赖包
@@ -39,7 +36,8 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     mv CloudflareST/* ./cf_ddns/ && \
     cp cf_ddns/ip.txt /app/ && \
     cp cf_ddns/ipv6.txt /app/ && \
-    rm -rf CloudflareST CloudflareST.tar.gz
+    rm -rf CloudflareST CloudflareST.tar.gz \
+    && date > /app/creat.txt
 
 # 复制脚本文件夹中的所有内容到容器的/app目录下
 COPY scripts/ /app/
