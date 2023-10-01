@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # 下载txt.zip并解压
 cd /app

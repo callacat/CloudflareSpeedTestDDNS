@@ -34,6 +34,8 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     mkdir CloudflareST && \
     tar -xzvf CloudflareST.tar.gz -C CloudflareST && \
     mv CloudflareST/* ./cf_ddns/ && \
+    cp cf_ddns/ip.txt /app/ && \
+    cp cf_ddns/ipv6.txt /app/ && \
     rm -rf CloudflareST CloudflareST.tar.gz
 
 # 复制脚本文件夹中的所有内容到容器的/app目录下

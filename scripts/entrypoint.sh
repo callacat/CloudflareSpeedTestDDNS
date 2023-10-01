@@ -23,15 +23,55 @@ if [ -f /data/cron.sh ]; then
     source /data/cron.sh  # 这里使用 source 来运行，以获取环境变量
 fi
 
+# 如果存在自定义的ip.txt，复制到 /app/cf_ddns/ip.txt 并强制替换
+if [ -f /data/ip.txt ]; then
+    echo "使用自定义IPv4测速" 
+    rm -rf /app/cf_ddns/ip.txt
+    cp /data/ip.txt /app/cf_ddns/ip.txt
+fi
+
+# 读取/app/config.conf
+source /app/config.conf
+
+# 如果IP_ADDR的值为ipv6，就则进入是否使用自定义ipv6的判断，否则跳过
+if [ "$IP_ADDR" = "ipv6" ]; then
+    # 如果存在自定义的ipv6.txt，复制到 /app/cf_ddns/ipv6.txt 并强制替换，如果不存在则使用默认ipv6
+    if [ -f /data/ipv6.txt ]; then
+        echo "使用自定义IPv6测速"
+        rm -rf /app/cf_ddns/ipv6.txt
+        cp /data/ipv6.txt /app/cf_ddns/ipv6.txt
+    else
+        echo "使用默认IPv6测速"
+        rm -rf /app/cf_ddns/ipv6.txt
+        cp /app/ip6.txt /app/cf_ddns/ipv6.txt
+    fi
+fi
+
 # 设置时间
 time=${CRON_TIME:-'0 5 * * *'}
+
+# 当使用自定义IPv4时，不执行ENABLE_DOWNLOAD 变量的判断
+if [ -f /data/ip.txt ]; then
+    ENABLE_DOWNLOAD=false
+fi
 
 # 根据 ENABLE_DOWNLOAD 变量选择要执行的命令
 if [ "$ENABLE_DOWNLOAD" = "true" ]; then
     echo "将使用优选IP进行测速"
+    # wget https://zip.baipiao.eu.org -O txt.zip
+    # if [ $? -ne 0 ]; then
+    #     echo "下载优选IP失败，使用默认IP"
+    #     cron_command="/app/start.sh"
+    # fi
+    # unzip txt.zip -d txt
+    # rm cf_ddns/ip.txt
+    # cat txt/*.txt > cf_ddns/ip.txt
+    # rm -rf txt txt.zip
     cron_command="/app/yxip.sh"
 else
     echo "未选择优选IP进行测速，使用默认IP"
+    rm -f /app/cf_ddns/ip.txt
+    cp /app/ip.txt /app/cf_ddns/ip.txt
     cron_command="/app/start.sh"
 fi
 
