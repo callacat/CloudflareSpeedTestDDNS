@@ -97,7 +97,7 @@ echo "$time cd /app && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx
 # 载入 cron 作业并启动 cron 守护进程（放到后台执行）
 crontab /etc/crontabs/cfyx && crond &
 
+echo -e "\033[32m已加入定时任务，当前定时: $time\033[0m\n"
+
 # 输出日志
 tail -f /tmp/cron.log
-
-echo -e "\033[32m已加入定时任务，当前定时: $time\033[0m\n"
