@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
     cp /app/ip.txt /app/cf_ddns/ip.txt # 复制默认的ip.txt文件
     exec /app/start.sh # 执行start.sh脚本
 fi
-unzip -o tmp/txt.zip -d tmp # 解压缩txt.zip文件到临时目录
+unzip -qo tmp/txt.zip -d tmp # 解压缩txt.zip文件到临时目录
 rm -f /app/cf_ddns/ip.txt # 删除旧的ip.txt文件
 cat tmp/*.txt | sort | uniq > /app/cf_ddns/ip.txt # 将所有txt文件合并到一个ip.txt文件中，并去重排序
 rm -rf tmp # 删除临时目录
