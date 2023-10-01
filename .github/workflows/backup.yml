@@ -17,7 +17,7 @@ jobs:
       
       - name: Download zip file from https://zip.baipiao.eu.org/
         run: |
-          curl -H “User-Agent: Mozilla/5.0” -o txt.zip https://zip.baipiao.eu.org/ # Specify the output file name as txt.zip
+          curl -H "User-Agent: Mozilla/5.0" -H "Accept-Encoding: gzip" -o txt.zip  # Specify the output file name as txt.zip
       
       - name: Delete old release branch
         run: |
