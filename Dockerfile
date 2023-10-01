@@ -7,7 +7,7 @@ ENV BUILD_TIME ${BUILD_TIME}
 ENV TZ=Asia/Shanghai
 
 # 安装所需的依赖包
-RUN apk add --no-cache bash jq wget curl tar sed unzip git tzdata pkill \
+RUN apk add --no-cache bash jq wget curl tar sed unzip git tzdata psmisc \
     && rm -rf /var/cache/apk/* \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
