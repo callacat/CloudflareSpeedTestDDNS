@@ -35,7 +35,7 @@ jobs:
     # 在这里添加一个步骤来获取当前时间，并设置为BUILD_TIME变量
     - name: Get current time
       id: time
-      run: echo "::set-output name=timestamp::$(date -u "+%Y-%m-%d %H:%M:%S" -d "+8 hours")"
+      run: echo “::set-output name=timestamp::$(TZ=":Asia/Shanghai" date “+%Y-%m-%d %H:%M:%S”)”
 
     - name: Build and push
       uses: docker/build-push-action@v2
