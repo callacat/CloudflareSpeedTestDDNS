@@ -51,6 +51,9 @@ CRON_TIME=${CRON_TIME:-'5 8 * * *'} # 使用自定义time或默认配置中的�
 # 定义日志函数,显示当前执行时间
 log_start() {
   echo -e "\033[32m当前执行时间:$(date +'%Y-%m-%d %H:%M:%S')\033[0m" >> /tmp/cron.log
+<<<<<<< HEAD
+>>>>>>> parent of 0305f5c (优化显示)
+=======
 >>>>>>> parent of 0305f5c (优化显示)
 }
 
@@ -70,6 +73,9 @@ set_cron() {
 =======
   cron_command=$1 # 获取参数作为要运行的命令
   echo "$CRON_TIME cd /app && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx # 写入定时任务
+<<<<<<< HEAD
+>>>>>>> parent of 0305f5c (优化显示)
+=======
 >>>>>>> parent of 0305f5c (优化显示)
   crontab /etc/crontabs/cfyx && crond & # 载入定时任务并在后台运行
 }
@@ -78,10 +84,13 @@ set_cron() {
 case "$ENABLE_DOWNLOAD" in
   true)
 <<<<<<< HEAD
+<<<<<<< HEAD
     /app/time.sh # 日志记录
     echo "当前使用优选IP进行测速"
     set_cron "/app/yxip.sh" # 设置定时任务
 =======
+=======
+>>>>>>> parent of 0305f5c (优化显示)
     log_start # 日志记录  
     set_cron "/app/yxip.sh" # 设置定时任务 
 >>>>>>> parent of 0305f5c (优化显示)
@@ -89,6 +98,7 @@ case "$ENABLE_DOWNLOAD" in
 
   false)
     if [ -f /data/ip.txt ]; then # 自定义ip文件存在
+<<<<<<< HEAD
 <<<<<<< HEAD
       /app/time.sh # 日志记录
       echo "当前使用自定义IP进行测速"
@@ -111,6 +121,16 @@ case "$ENABLE_DOWNLOAD" in
     else # 其他情况使用默认ip
       log_start  
 >>>>>>> parent of 0305f5c (优化显示)
+=======
+      log_start  # 日志记录
+      cp /data/ip.txt /app/cf_ddns/ip.txt # 拷贝自定义ip文件
+      set_cron "/app/start.sh" # 设置定时任务
+    elif [ "$IP_PR_IP" = "true" ]; then # 开启IP_PR模式
+      log_start
+      set_cron "/app/start.sh"
+    else # 其他情况使用默认ip
+      log_start  
+>>>>>>> parent of 0305f5c (优化显示)
       cp /app/ip.txt /app/cf_ddns/ip.txt # 拷贝默认ip文件
       set_cron "/app/start.sh"
     fi
@@ -120,8 +140,11 @@ esac
 # 执行一次性任务函数
 run_once() {
 <<<<<<< HEAD
+<<<<<<< HEAD
   cd /app && $cron_command >> $LOG_FILE 2>&1 &
 =======
+=======
+>>>>>>> parent of 0305f5c (优化显示)
 #  log_start
   cd /app && $cron_command >> /tmp/cron.log 2>&1 &
 >>>>>>> parent of 0305f5c (优化显示)
@@ -137,7 +160,12 @@ run_custom && run_once
 
 # 输出定时任务日志
 <<<<<<< HEAD
+<<<<<<< HEAD
 tail -f $LOG_FILE
+=======
+echo -e "\033[32m已加入定时任务，当前定时: $CRON_TIME\033[0m\n"
+tail -f /tmp/cron.log
+>>>>>>> parent of 0305f5c (优化显示)
 =======
 echo -e "\033[32m已加入定时任务，当前定时: $CRON_TIME\033[0m\n"
 tail -f /tmp/cron.log
