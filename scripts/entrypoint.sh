@@ -24,7 +24,6 @@ fi
 # 执行自定义脚本函数
 run_custom() {
   if [ -f /data/cron.sh ]; then
-    echo "开始读取cron.sh脚本"
     chmod +x /data/cron.sh
     /app/load_config.sh
   fi
