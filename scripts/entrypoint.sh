@@ -78,7 +78,7 @@ esac
 
 # 执行一次性任务函数
 run_once() {
-  log_start
+#  log_start
   cd /app && $cron_command >> /tmp/cron.log 2>&1 &
 }
 
@@ -88,4 +88,3 @@ run_once
 # 输出定时任务日志
 echo -e "\033[32m已加入定时任务，当前定时: $CRON_TIME\033[0m\n"
 tail -f /tmp/cron.log
-
