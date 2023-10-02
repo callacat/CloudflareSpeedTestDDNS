@@ -36,7 +36,7 @@ run_custom() {
 run_custom
 
 # 获取定时时间 
-CRON_TIME=${time:-'5 8 * * *'} # 使用自定义time或默认配置中的时间
+CRON_TIME=${CRON_TIME:-'5 8 * * *'} # 使用自定义time或默认配置中的时间
 
 # 定义日志函数,显示当前执行时间
 log_start() {
@@ -76,13 +76,10 @@ case "$ENABLE_DOWNLOAD" in
     ;;
 esac
 
-# 设置定时任务
-set_cron $cron_command
-
 # 执行一次性任务函数
 run_once() {
   log_start
-  cd /app && $cron_command >> /tmp/cron.log 2>&1 
+  cd /app && $cron_command >> /tmp/cron.log 2>&1 &
 }
 
 # 启动时执行一次测速任务
@@ -91,3 +88,4 @@ run_once
 # 输出定时任务日志
 echo -e "\033[32m已加入定时任务，当前定时: $CRON_TIME\033[0m\n"
 tail -f /tmp/cron.log
+
