@@ -27,8 +27,13 @@ fi
 run_custom() {
   if [ -f "$CRON_SCRIPT" ]; then
     chmod +x "$CRON_SCRIPT"
-    /app/load_config.sh
+    load_config
   fi
+}
+
+load_config() {
+  source /app/config.conf
+  source /data/cron.sh
 }
 
 # 定义日志文件
@@ -78,8 +83,13 @@ run_once() {
   cd /app && $cron_command >> $LOG_FILE 2>&1 &
 }
 
+echo "$cron_command"
+echo "$IP_PR_IP"
+echo "$ENABLE_DOWNLOAD"
+echo "$CRON_TIME"
+
 # 启动时执行一次测速任务
-run_once
+run_custom && run_once
 
 # 输出定时任务日志
 tail -f $LOG_FILE
