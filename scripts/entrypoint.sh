@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# 加载配置文件
-source /app/config.conf 
-
 # 显示镜像打包时间
 BUILD_TIME=$(cat /app/creat.txt)
 echo -e "\033[32m镜像打包时间:$BUILD_TIME\033[0m"
@@ -29,24 +26,26 @@ run_custom() {
   if [ -f /data/cron.sh ]; then
     echo "开始读取cron.sh脚本"
     chmod +x /data/cron.sh
-    source /data/cron.sh # 使用source执行,以获取环境变量
+    /app/load_config.sh
   fi
 }
 
 run_custom
-
-# 获取定时时间 
-CRON_TIME=${CRON_TIME:-'5 8 * * *'} # 使用自定义time或默认配置中的时间
 
 # 定义日志函数,显示当前执行时间
 log_start() {
   /app/time.sh
 }
 
+# 定义定时任务函数
+custom() {
+  cd /app && /app/load_config.sh && /app/time.sh && $cron_command
+}
+
 # 创建定时任务函数 
 set_cron() {
   cron_command=$1 # 获取参数作为要运行的命令
-  echo "$CRON_TIME cd /app && /app/time.sh && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx # 写入定时任务
+  echo "$CRON_TIME $custom >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx # 写入定时任务
   crontab /etc/crontabs/cfyx && crond & # 载入定时任务并在后台运行
 }
 
