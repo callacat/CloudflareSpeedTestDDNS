@@ -12,5 +12,3 @@ echo "重载配置文件"
 export CRON_TIME=${CRON_TIME:-'5 8 * * *'}
 export ENABLE_DOWNLOAD=${ENABLE_DOWNLOAD:-true}
 export IP_PR_IP=${IP_PR_IP:-false}
-
-exit 0
