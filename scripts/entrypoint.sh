@@ -11,7 +11,8 @@ if [ ! -f /data/config.conf ]; then
 fi
 
 # 每次启动时创建一个内置的配置文件备份
-mv -r /app/backup/config.conf.bak /data/config.conf.bak
+rm /data/config.conf.bak
+cp /app/backup/config.conf.bak /data/config.conf.bak
 
 # 创建软链接
 if [ ! -L /app/config.conf ]; then
