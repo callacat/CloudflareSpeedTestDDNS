@@ -9,14 +9,10 @@ RUN apk add --no-cache bash jq wget curl tar sed unzip git tzdata psmisc \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # 创建/app和/config目录
-<<<<<<< HEAD
-RUN mkdir -p /app /data/backup
-=======
 RUN mkdir /app /data
->>>>>>> parent of aca32d7 (更新20231004版)
 
 # 设置工作目录
-WORKDIR /data
+WORKDIR /app
 
 # 下载CloudflareSpeedTestDDNS代码并移动文件
 RUN git clone https://github.com/lee1080/CloudflareSpeedTestDDNS.git && \
@@ -38,13 +34,8 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     mkdir CloudflareST && \
     tar -xzvf CloudflareST.tar.gz -C CloudflareST && \
     mv CloudflareST/* ./cf_ddns/ && \
-<<<<<<< HEAD
-    cp cf_ddns/ip.txt backup/ && \
-    cp cf_ddns/ipv6.txt backup/ && \
-=======
     cp cf_ddns/ip.txt /app/ && \
     cp cf_ddns/ipv6.txt /app/ && \
->>>>>>> parent of aca32d7 (更新20231004版)
     rm -rf CloudflareST CloudflareST.tar.gz \
     && date > /app/creat.txt
 

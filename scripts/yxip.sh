@@ -10,11 +10,7 @@ if [ $? -eq 0 ]; then
     unzip -qo tmp/txt.zip -d tmp # 解压缩txt.zip文件到临时目录
     cat tmp/*.txt | sort | uniq > /app/cf_ddns/ip.txt # 将所有txt文件合并到一个ip.txt文件中，并去重排序
 else
-<<<<<<< HEAD
-    echo -e "\033[31m下载优选IP失败，使用默认IP\033[0m\n"
-=======
     echo -e "\033[31m下载优选IP失败，使用默认IP\测速033[0m\n"
->>>>>>> parent of aca32d7 (更新20231004版)
     rm -f /app/cf_ddns/ip.txt # 删除旧的ip.txt文件
     cp /app/ip.txt /app/cf_ddns/ip.txt # 复制默认的ip.txt文件
 fi
