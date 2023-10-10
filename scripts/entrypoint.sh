@@ -8,6 +8,7 @@ echo -e "\033[32m镜像打包时间:$BUILD_TIME\033[0m"
 if [ ! -f /data/config.conf ]; then
   echo "首次启动请编辑/data映射目录下的配置文件后重启容器"
   mv -n /app/cft/* /data/
+  chmod -R 777 /data/*
   exit 1
 else
   /data/start.sh
