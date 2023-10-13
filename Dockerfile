@@ -6,11 +6,13 @@ ENV TZ=Asia/Shanghai
 # 安装所需的依赖包
 RUN apk add --no-cache bash jq wget curl tar sed unzip git tzdata psmisc \
     && rm -rf /var/cache/apk/* \
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-    && mkdir /app /data
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# 创建/app和/config目录
+RUN mkdir /app /data
 
 # 设置工作目录
-WORKDIR /app/cft
+WORKDIR /app
 
 # 下载CloudflareSpeedTestDDNS代码并移动文件
 RUN git clone https://github.com/lee1080/CloudflareSpeedTestDDNS.git && \
@@ -32,6 +34,8 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     mkdir CloudflareST && \
     tar -xzvf CloudflareST.tar.gz -C CloudflareST && \
     mv CloudflareST/* ./cf_ddns/ && \
+    cp cf_ddns/ip.txt /app/ && \
+    cp cf_ddns/ipv6.txt /app/ && \
     rm -rf CloudflareST CloudflareST.tar.gz \
     && date > /app/creat.txt
 
