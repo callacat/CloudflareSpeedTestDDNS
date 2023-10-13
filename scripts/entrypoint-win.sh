@@ -12,5 +12,6 @@ if [ ! -f /data/config.conf ]; then
   exit 1
 else
   ln -sf /data/config.conf /app/cft/config.conf
+  chmod +x /app/cft/*
   /app/cft/start.sh
 fi
