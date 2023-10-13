@@ -15,7 +15,7 @@ WORKDIR /app/cft
 # 下载CloudflareSpeedTestDDNS代码并移动文件
 RUN git clone https://github.com/lee1080/CloudflareSpeedTestDDNS.git && \
     mv CloudflareSpeedTestDDNS/* . && \
-    rm -rf CloudflareSpeedTestDDNS && \
+    rm -rf CloudflareSpeedTestDDNS \
     && rm README.md
 
 # 下载CloudflareSpeedTest并解压缩
@@ -32,8 +32,8 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     mkdir CloudflareST && \
     tar -xzvf CloudflareST.tar.gz -C CloudflareST && \
     mv CloudflareST/* ./cf_ddns/ && \
-    rm -rf CloudflareST CloudflareST.tar.gz \
-    chmod +x ./* && \
+    rm -rf CloudflareST CloudflareST.tar.gz && \
+    chmod +x ./* \
     && date > /app/creat.txt
 
 # 复制脚本文件夹中的所有内容到容器的/app目录下
