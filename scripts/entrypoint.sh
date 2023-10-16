@@ -73,3 +73,4 @@ else
 
     # 启动时执行一次测速任务
     run_once
+  fi
