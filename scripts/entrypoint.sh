@@ -18,6 +18,11 @@ else
   source /app/config.conf
   source /data/cron.conf
 
+  # 定义日志函数,显示当前执行时间
+  log_start() {
+    /app/time.sh
+  }
+
   # 判断配置走不同逻辑
   case "$ENABLE_DOWNLOAD" in
 
@@ -50,11 +55,6 @@ else
 
   # 如果定时任务不为空
   if "$CRON_TIME" != "" ; then
-    # 定义日志函数,显示当前执行时间
-    log_start() {
-      /app/time.sh
-    }
-
     # 创建定时任务函数 
     set_cron() {
       cron_command=$1 # 获取参数作为要运行的命令
