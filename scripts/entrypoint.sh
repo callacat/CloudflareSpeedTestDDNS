@@ -71,6 +71,7 @@ else
         crontab /etc/crontabs/cfyx && crond & # 载入定时任务并在后台运行
       }
       set_cron
+      $cron_command >> /tmp/cron.log 2>&1 &
       # 输出定时任务日志
       tail -f /tmp/cron.log
     else
