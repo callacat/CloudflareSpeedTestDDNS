@@ -4,10 +4,10 @@ FROM alpine:latest
 ENV TZ=Asia/Shanghai
 
 # 安装所需的依赖包
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
-    && apk add --no-cache bash jq wget curl tar sed unzip git tzdata psmisc \
+RUN apk add --no-cache bash jq wget curl tar sed unzip git tzdata psmisc \
     && rm -rf /var/cache/apk/* \
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
 # 设置工作目录
 WORKDIR /app
