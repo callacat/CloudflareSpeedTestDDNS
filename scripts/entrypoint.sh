@@ -24,12 +24,12 @@ else
 
   # 执行一次性任务函数
   run_once() {
-    cd /app && $cron_command >> /tmp/cron.log 2>&1 &
+    /app/start.sh >> /tmp/cron.log 2>&1 &
   }
 
-  # 如果cron.conf存在
+  # 判断是否存在cron.conf
   if [ -f /data/cron.conf ]; then
-    # 加载cron.conf
+    # 如果存在则加载配置
     source /data/cron.conf
 
     # 判断配置走不同逻辑
@@ -56,7 +56,7 @@ else
         else # 其他情况使用默认ip
           log_start
           echo "当前使用默认IP进行测速"
-          cp /app/ip.txt /app/cf_ddns/ip.txt # 拷贝默认ip文件
+          cp /app/backup/ip.txt /app/cf_ddns/ip.txt # 拷贝默认ip文件
           set_cron "/app/start.sh"
         fi
         ;;
@@ -74,11 +74,11 @@ else
       # 输出定时任务日志
       tail -f /tmp/cron.log
     else
-      # 启动时执行一次测速任务
+      # 如果定时任务为空则只运行一次
       run_once
     fi
   else
-    # 直接启动脚本
-    /app/start.sh
+    # 如果不存在cron.conf则直接启动
+    log_start && /app/start.sh
   fi
 fi
