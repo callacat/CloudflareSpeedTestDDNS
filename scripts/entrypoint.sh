@@ -39,7 +39,7 @@ else
       true)
         log_start # 日志记录 
         echo "当前使用优选IP进行测速"
-        set_cron "/app/yxip.sh" # 设置定时任务 
+        cron_command="/app/yxip.sh" # 设置定时任务 
         ;;
 
     # 如果不启用  
@@ -48,16 +48,16 @@ else
           log_start  # 日志记录
           echo "当前使用自定义IP进行测速"
           cp /data/ip.txt /app/cf_ddns/ip.txt # 拷贝自定义ip文件
-          set_cron "/app/start.sh" # 设置定时任务
+          cron_command="/app/start.sh" # 设置定时任务
         elif [ "$IP_PR_IP" = "true" ]; then # 开启IP_PR模式
           log_start
           echo "当前使用IP_PR模式进行测速"
-          set_cron "/app/start.sh"
+          cron_command="/app/start.sh"
         else # 其他情况使用默认ip
           log_start
           echo "当前使用默认IP进行测速"
           cp /app/backup/ip.txt /app/cf_ddns/ip.txt # 拷贝默认ip文件
-          set_cron "/app/start.sh"
+          cron_command="/app/start.sh"
         fi
         ;;
     esac
@@ -66,7 +66,7 @@ else
     if "$CRON_TIME" != "" ; then
       # 创建定时任务函数 
       set_cron() {
-        cron_command=$1 # 获取参数作为要运行的命令
+        # cron_command=$1 # 获取参数作为要运行的命令
         echo "$CRON_TIME cd /app && /app/time.sh && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx # 写入定时任务
         crontab /etc/crontabs/cfyx && crond & # 载入定时任务并在后台运行
       }
