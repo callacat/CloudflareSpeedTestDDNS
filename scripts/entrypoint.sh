@@ -70,7 +70,7 @@ else
         echo "$CRON_TIME cd /app && /app/time.sh && $cron_command >> /tmp/cron.log 2>&1" > /etc/crontabs/cfyx # 写入定时任务
         crontab /etc/crontabs/cfyx && crond & # 载入定时任务并在后台运行
       }
-
+      set_cron
       # 输出定时任务日志
       tail -f /tmp/cron.log
     else
