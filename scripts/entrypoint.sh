@@ -24,7 +24,7 @@ else
 
   # 执行一次性任务函数
   run_once() {
-    /app/start.sh >> /tmp/cron.log 2>&1 &
+    /app/start.sh >> /tmp/cron.log 2>&1
   }
 
   # 判断是否存在cron.conf
