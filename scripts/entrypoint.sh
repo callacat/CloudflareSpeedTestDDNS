@@ -63,7 +63,7 @@ else
     esac
 
     # 如果定时任务不为空
-    if "$CRON_TIME" != "" ; then
+    if [ "$CRON_TIME" != "" ] ; then
       # 创建定时任务函数 
       set_cron() {
         # cron_command=$1 # 获取参数作为要运行的命令
