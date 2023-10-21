@@ -9,11 +9,10 @@ log() {
 config_file="/data/config.conf"
 if [ ! -f "$config_file" ]; then
   log "请先编辑配置文件 $config_file 后再次启动"
-  cp /app/config.conf /data/config.conf.bak
+  cp -f /app/config.conf /data/config.conf.bak
   mv /app/config.conf /data
   cp /app/scripts/cron.conf /data
   cp -f /app/scripts/cron.conf /data/cron.conf.bak
-  ln -s /data/config.conf /app/config.conf
   exit 1
 fi
 source "$config_file"
@@ -29,7 +28,10 @@ if [ ! -f "/data/cron.conf" ]; then
 else
   cron="/data/cron.conf"
   source "$cron"
-
+  # 每次启动强制覆盖定时任务文件备份
+  cp -f /app/scripts/cron.conf /data/cron.conf.bak
+  # 每次启动强制软链接配置文件
+  ln -sf /data/config.conf /app/config.conf
   # 验证定时任务格式
   pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$"
   # 如果CRON_TIME的值不为空且格式正确时，添加到定时任务且启动一次
