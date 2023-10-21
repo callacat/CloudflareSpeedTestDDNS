@@ -22,11 +22,6 @@ else
     /app/time.sh
   }
 
-  # 执行一次性任务函数
-  run_once() {
-    /app/start.sh >> /tmp/cron.log 2>&1
-  }
-
   # 判断是否存在cron.conf
   if [ -f /data/cron.conf ]; then
     # 如果存在则加载配置
@@ -76,7 +71,7 @@ else
       tail -f /tmp/cron.log
     else
       # 如果定时任务为空则只运行一次
-      run_once
+      log_start && /app/start.sh
     fi
   else
     # 如果不存在cron.conf则直接启动
