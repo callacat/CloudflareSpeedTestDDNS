@@ -9,8 +9,8 @@ log() {
 config_file="/data/config.conf"
 if [ ! -f "$config_file" ]; then
   log "请先编辑配置文件 $config_file 后再次启动"
-  cp /app/scripts/config.conf /data
-  cp -n /app/scripts/config.conf /data/config.conf.bak
+  cp /app/config.conf /data
+  cp -n /app/config.conf /data/config.conf.bak
   cp /app/scripts/cron.conf /data
   cp -n /app/scripts/cron.conf /data/cron.conf.bak
   ln -s /data/config.conf /app/config.conf
