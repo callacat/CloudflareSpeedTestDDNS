@@ -37,7 +37,7 @@ else
   yxip="/data/yxip.conf"
   source "$yxip"
 
-    # 主逻辑
+  # 主逻辑
   if [[ $ENABLE_DOWNLOAD == "true" ]]; then
     log "使用优选IP测速"
     /app/scripts/yxip.sh
