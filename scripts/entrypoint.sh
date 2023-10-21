@@ -9,10 +9,10 @@ log() {
 config_file="/data/config.conf"
 if [ ! -f "$config_file" ]; then
   log "请先编辑配置文件 $config_file 后再次启动"
-  cp /app/config.conf /data
-  cp -n /app/config.conf /data/config.conf.bak
+  cp /app/config.conf /data/config.conf.bak
+  mv /app/config.conf /data
   cp /app/scripts/cron.conf /data
-  cp -n /app/scripts/cron.conf /data/cron.conf.bak
+  cp -f /app/scripts/cron.conf /data/cron.conf.bak
   ln -s /data/config.conf /app/config.conf
   exit 1
 fi
@@ -22,7 +22,7 @@ start="/app/start.sh"
 
 # 如果cron.conf不存在则直接启动
 if [ ! -f "/data/cron.conf" ]; then
-  cp -n /app/scripts/cron.conf /data/cron.conf.bak
+  cp -f /app/scripts/cron.conf /data/cron.conf.bak
   start
   log "优选IP任务执行完成"
   exit 0
