@@ -18,11 +18,14 @@ if [ ! -f "$config_file" ]; then
 fi
 
 # 每次启动强制软链接配置文件
+rm -f /app/config.conf
 ln -sf /data/config.conf /app/config.conf
 
 source "$config_file"
 
-start="/app/start.sh"
+start() {
+  /app/start.sh
+}
 
 # 如果yxip.conf不存在则直接启动
 if [ ! -f "/data/yxip.conf" ]; then
