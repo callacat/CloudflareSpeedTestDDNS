@@ -41,10 +41,10 @@ RUN latest_version=$(curl -s https://api.github.com/repos/XIU2/CloudflareSpeedTe
     && date > /app/creat.txt
 
 # 复制脚本文件夹中的所有内容到容器的/app目录下
-COPY scripts/ /app/
+COPY scripts/ /app/scripts
 
 # 给/app目录下的文件赋权
-RUN chmod +x /app/*
+RUN chmod +x /app/* /app/scripts/*
 
 # 设置容器入口点
 ENTRYPOINT ["/app/entrypoint.sh"]
