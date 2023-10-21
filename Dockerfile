@@ -47,4 +47,4 @@ COPY scripts/ /app/scripts
 RUN chmod +x /app/* /app/scripts/*
 
 # 设置容器入口点
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/app/scripts/entrypoint.sh"]
